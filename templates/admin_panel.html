@@ -9,77 +9,77 @@
 </head>
 <body class="bg-gray-50">
     <!-- Navbar -->
-    <nav class="bg-[#1a2742] text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-8">
-                    <a href="/" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-yellow-400 rounded-full"></div>
-                        <span class="font-bold text-xl">InterCards</span>
-                    </a>
-                    <a href="/" class="hover:text-yellow-400 transition">Volver al Inicio</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-300">Admin: {{ current_user.username }}</span>
-                    <a href="/logout" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">Cerrar Sesión</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {% include 'navbar.html' %}
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
-            <p class="text-gray-600">Gestiona todos los torneos de la plataforma</p>
+        <div class="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
+                <p class="text-sm sm:text-base text-gray-600">Gestiona todos los torneos y configuración de la plataforma</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <button onclick="abrirModalLogo()" class="w-full sm:w-auto px-4 sm:px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold shadow-lg transition flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Gestionar Logo</span>
+                </button>
+                <button onclick="abrirModalPopup()" class="w-full sm:w-auto px-4 sm:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-lg transition flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Gestionar Popup</span>
+                </button>
+            </div>
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
-                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
                     </div>
-                    <div class="ml-5 w-0 flex-1">
+                    <div class="ml-4 sm:ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Torneos</dt>
-                            <dd class="text-2xl font-semibold text-gray-900" id="total-torneos">-</dd>
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 truncate">Total Torneos</dt>
+                            <dd class="text-xl sm:text-2xl font-semibold text-gray-900" id="total-torneos">-</dd>
                         </dl>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
-                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <div class="ml-5 w-0 flex-1">
+                    <div class="ml-4 sm:ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Próximos</dt>
-                            <dd class="text-2xl font-semibold text-gray-900" id="torneos-proximos">-</dd>
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 truncate">Próximos</dt>
+                            <dd class="text-xl sm:text-2xl font-semibold text-gray-900" id="torneos-proximos">-</dd>
                         </dl>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="bg-white rounded-lg shadow p-4 sm:p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
-                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                         </svg>
                     </div>
-                    <div class="ml-5 w-0 flex-1">
+                    <div class="ml-4 sm:ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Tiendas</dt>
-                            <dd class="text-2xl font-semibold text-gray-900" id="total-tiendas">-</dd>
+                            <dt class="text-xs sm:text-sm font-medium text-gray-500 truncate">Tiendas</dt>
+                            <dd class="text-xl sm:text-2xl font-semibold text-gray-900" id="total-tiendas">-</dd>
                         </dl>
                     </div>
                 </div>
@@ -87,8 +87,8 @@
         </div>
 
         <!-- Action Button -->
-        <div class="mb-6">
-            <button onclick="abrirFormularioNuevo()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg transition flex items-center space-x-2">
+        <div class="mb-4 sm:mb-6">
+            <button onclick="abrirFormularioNuevo()" class="w-full sm:w-auto px-4 sm:px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-lg transition flex items-center justify-center sm:justify-start space-x-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -98,21 +98,21 @@
 
         <!-- Torneos Table -->
         <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-900">Lista de Torneos</h2>
+            <div class="px-4 sm:px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg sm:text-xl font-semibold text-gray-900">Lista de Torneos</h2>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tienda</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ubicación</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TCG</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Tienda</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Ubicación</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Hora</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TCG</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">Tipo</th>
+                            <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-torneos" class="bg-white divide-y divide-gray-200">
@@ -125,15 +125,15 @@
 
     <!-- Modal Formulario -->
     <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-6 rounded-t-2xl">
-                <h2 id="modal-titulo" class="text-2xl font-bold">Crear Nuevo Torneo</h2>
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-8 py-4 sm:py-6 rounded-t-2xl">
+                <h2 id="modal-titulo" class="text-xl sm:text-2xl font-bold">Crear Nuevo Torneo</h2>
             </div>
             
-            <form id="formulario" class="p-8 space-y-6">
+            <form id="formulario" class="p-4 sm:p-8 space-y-4 sm:space-y-6">
                 <input type="hidden" id="torneo_id">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de Tienda:</label>
                         <input type="text" id="nombre_tienda" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -362,7 +362,7 @@
         function confirmarEliminar(id) {
             if (!confirm('¿Estás seguro de eliminar este torneo?')) return;
             
-            fetch(`/api/torneos?id=${id}`, {
+            fetch(`/api/torneos/${id}`, {
                 method: 'DELETE'
             }).then(response => {
                 if (response.ok) {
@@ -372,6 +372,410 @@
                     window.location.href = '/admin';
                 }
             });
+        }
+
+        // ========================================
+        // GESTIÓN DE LOGO
+        // ========================================
+
+        function abrirModalLogo() {
+            document.getElementById('modal-logo').classList.remove('hidden');
+        }
+
+        function cerrarModalLogo() {
+            document.getElementById('modal-logo').classList.add('hidden');
+            document.getElementById('form-logo').reset();
+            document.getElementById('preview-logo').classList.add('hidden');
+            document.getElementById('preview-img').src = '';
+        }
+
+        // Preview de imagen antes de subir
+        document.getElementById('input-logo')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validar tamaño (2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('El archivo es muy grande. Máximo 2MB permitido.');
+                    e.target.value = '';
+                    return;
+                }
+
+                // Validar tipo
+                const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Formato no válido. Use PNG, JPG, JPEG, GIF o WEBP.');
+                    e.target.value = '';
+                    return;
+                }
+
+                // Mostrar preview
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('preview-img').src = event.target.result;
+                    document.getElementById('preview-logo').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+
+                // Mostrar info del archivo
+                document.getElementById('file-info').textContent = 
+                    `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            }
+        });
+
+        async function subirLogo() {
+            const input = document.getElementById('input-logo');
+            const file = input.files[0];
+
+            if (!file) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('logo', file);
+
+            try {
+                const response = await fetch('/admin/logo', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Logo actualizado exitosamente');
+                    cerrarModalLogo();
+                    // Recargar página para ver el nuevo logo
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Error al subir el logo');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al subir el logo');
+            }
+        }
+
+        async function eliminarLogo() {
+            if (!confirm('¿Estás seguro de eliminar el logo actual?')) return;
+
+            try {
+                const response = await fetch('/admin/logo', {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Logo eliminado exitosamente');
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Error al eliminar el logo');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el logo');
+            }
+        }
+    </script>
+
+    <!-- Modal Logo -->
+    <div id="modal-logo" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Gestionar Logo</h2>
+                <button onclick="cerrarModalLogo()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Logo Actual -->
+            {% if logo %}
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                <p class="text-sm font-semibold text-gray-700 mb-2">Logo Actual:</p>
+                <div class="flex items-center justify-center bg-white p-4 rounded border">
+                    <img src="{{ url_for('static', filename='uploads/' + logo.filename) }}" alt="Logo actual" class="h-20 w-auto object-contain">
+                </div>
+                <button onclick="eliminarLogo()" class="mt-3 w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition">
+                    Eliminar Logo Actual
+                </button>
+            </div>
+            {% endif %}
+
+            <!-- Formulario Subir Logo -->
+            <form id="form-logo" onsubmit="event.preventDefault(); subirLogo();" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Subir Nuevo Logo:</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition">
+                        <input type="file" id="input-logo" name="logo" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" class="hidden">
+                        <label for="input-logo" class="cursor-pointer">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-600">Click para seleccionar archivo</p>
+                            <p id="file-info" class="mt-1 text-xs text-gray-500"></p>
+                        </label>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500">
+                        <strong>Recomendado:</strong> 200x50 px o similar (ancho mayor que alto)<br>
+                        <strong>Formato:</strong> PNG, JPG, JPEG, GIF, WEBP<br>
+                        <strong>Tamaño máximo:</strong> 2 MB
+                    </p>
+                </div>
+
+                <!-- Preview -->
+                <div id="preview-logo" class="hidden">
+                    <p class="text-sm font-semibold text-gray-700 mb-2">Vista Previa:</p>
+                    <div class="flex items-center justify-center bg-gray-50 p-4 rounded border">
+                        <img id="preview-img" src="" alt="Preview" class="h-20 w-auto object-contain">
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="cerrarModalLogo()" class="flex-1 px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-semibold transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition">
+                        Guardar Logo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="modal-popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Gestionar Popup Informativo</h2>
+                <button onclick="cerrarModalPopup()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Estado Actual -->
+            <div id="popup-estado" class="mb-6 p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold text-gray-700">Estado del Popup:</span>
+                    <span id="popup-status-badge" class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">ACTIVO</span>
+                </div>
+                <div id="popup-preview-container" class="bg-white p-2 rounded border">
+                    <img id="popup-preview-img" src="" alt="Popup actual" class="w-full h-auto object-contain max-h-48">
+                </div>
+            </div>
+
+            <!-- Controles -->
+            <div class="space-y-4">
+                <!-- Activar/Desactivar -->
+                <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                    <div>
+                        <p class="font-semibold text-gray-900">Activar Popup</p>
+                        <p class="text-xs text-gray-600">Mostrar popup en la página principal</p>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="popup-toggle" class="sr-only peer" onchange="togglePopup()">
+                        <div class="w-14 h-8 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+
+                <!-- Subir Nueva Imagen -->
+                <form id="form-popup" onsubmit="event.preventDefault(); subirPopup();" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Subir Nueva Imagen:</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-500 transition">
+                            <input type="file" id="input-popup" name="imagen" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" class="hidden">
+                            <label for="input-popup" class="cursor-pointer">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                <p class="mt-2 text-sm text-gray-600">Click para seleccionar archivo</p>
+                                <p id="popup-file-info" class="mt-1 text-xs text-gray-500"></p>
+                            </label>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">
+                            <strong>Recomendado:</strong> 800x600 px (proporción 4:3) o 1200x800 px<br>
+                            <strong>Formato:</strong> PNG, JPG, JPEG, GIF, WEBP<br>
+                            <strong>Tamaño máximo:</strong> 2 MB
+                        </p>
+                    </div>
+
+                    <!-- Preview Nueva Imagen -->
+                    <div id="preview-popup-nuevo" class="hidden">
+                        <p class="text-sm font-semibold text-gray-700 mb-2">Vista Previa:</p>
+                        <div class="bg-gray-50 p-4 rounded border">
+                            <img id="preview-popup-img" src="" alt="Preview" class="w-full h-auto object-contain max-h-48">
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="flex space-x-4 pt-4">
+                        <button type="button" onclick="eliminarPopup()" class="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition">
+                            Restaurar Dummy
+                        </button>
+                        <button type="submit" class="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition">
+                            Subir Imagen
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // GESTIÓN DE POPUP INFORMATIVO
+        // ========================================
+
+        function abrirModalPopup() {
+            cargarEstadoPopup();
+            document.getElementById('modal-popup').classList.remove('hidden');
+        }
+
+        function cerrarModalPopup() {
+            document.getElementById('modal-popup').classList.add('hidden');
+            document.getElementById('form-popup').reset();
+            document.getElementById('preview-popup-nuevo').classList.add('hidden');
+            document.getElementById('preview-popup-img').src = '';
+        }
+
+        async function cargarEstadoPopup() {
+            try {
+                const response = await fetch('/admin/popup');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('popup-toggle').checked = data.activo;
+                    document.getElementById('popup-status-badge').textContent = data.activo ? 'ACTIVO' : 'INACTIVO';
+                    document.getElementById('popup-status-badge').className = data.activo 
+                        ? 'px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full'
+                        : 'px-3 py-1 bg-gray-100 text-gray-700 text-xs font-bold rounded-full';
+                    document.getElementById('popup-preview-img').src = data.url;
+                }
+            } catch (error) {
+                console.error('Error al cargar estado del popup:', error);
+            }
+        }
+
+        async function togglePopup() {
+            const activo = document.getElementById('popup-toggle').checked;
+            
+            try {
+                const response = await fetch('/admin/popup', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ activo: activo })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(data.mensaje);
+                    cargarEstadoPopup();
+                } else {
+                    alert(data.error || 'Error al cambiar estado del popup');
+                    document.getElementById('popup-toggle').checked = !activo;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cambiar estado del popup');
+                document.getElementById('popup-toggle').checked = !activo;
+            }
+        }
+
+        // Preview de imagen antes de subir
+        document.getElementById('input-popup')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validar tamaño (2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('El archivo es muy grande. Máximo 2MB permitido.');
+                    e.target.value = '';
+                    return;
+                }
+
+                // Validar tipo
+                const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Formato no válido. Use PNG, JPG, JPEG, GIF o WEBP.');
+                    e.target.value = '';
+                    return;
+                }
+
+                // Mostrar preview
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('preview-popup-img').src = event.target.result;
+                    document.getElementById('preview-popup-nuevo').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+
+                // Mostrar info del archivo
+                document.getElementById('popup-file-info').textContent = 
+                    `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            }
+        });
+
+        async function subirPopup() {
+            const input = document.getElementById('input-popup');
+            const file = input.files[0];
+
+            if (!file) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('imagen', file);
+
+            try {
+                const response = await fetch('/admin/popup', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Popup actualizado exitosamente');
+                    document.getElementById('form-popup').reset();
+                    document.getElementById('preview-popup-nuevo').classList.add('hidden');
+                    cargarEstadoPopup();
+                } else {
+                    alert(data.error || 'Error al subir el popup');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al subir el popup');
+            }
+        }
+
+        async function eliminarPopup() {
+            if (!confirm('¿Estás seguro de restaurar la imagen dummy? Esto eliminará la imagen actual.')) return;
+
+            try {
+                const response = await fetch('/admin/popup', {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(data.mensaje);
+                    cargarEstadoPopup();
+                } else {
+                    alert(data.error || 'Error al eliminar el popup');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el popup');
+            }
         }
     </script>
 </body>

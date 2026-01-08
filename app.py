@@ -1,15 +1,33 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
 import sys
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///torneos.db'
+
+# Configuración de base de datos (PostgreSQL en producción, SQLite en desarrollo)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///torneos.db')
+# Render usa postgres:// pero SQLAlchemy necesita postgresql://
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith('postgres://'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://', 1)
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'tu-clave-secreta-super-segura-cambiar-en-produccion'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'tu-clave-secreta-super-segura-cambiar-en-produccion')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'static', 'uploads')
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2MB máximo
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+# Crear carpeta de uploads si no existe
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
 db = SQLAlchemy(app)
 
 # Configurar Flask-Login
@@ -33,6 +51,38 @@ class User(UserMixin, db.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Logo(db.Model):
+    """
+    Modelo para almacenar el logo del sitio.
+    Solo debe existir un registro (id=1).
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(200), nullable=False)
+    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    @staticmethod
+    def get_logo():
+        """Retorna el logo actual o None si no existe"""
+        return Logo.query.first()
+
+
+class Popup(db.Model):
+    """
+    Modelo para almacenar el popup informativo (flyers).
+    Solo debe existir un registro (id=1).
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    activo = db.Column(db.Boolean, default=True, nullable=False)
+    filename = db.Column(db.String(200), nullable=False)
+    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    @staticmethod
+    def get_popup():
+        """Retorna el popup actual o None si no existe"""
+        return Popup.query.first()
+
 
 # Modelo de Torneo
 class Torneo(db.Model):
@@ -146,10 +196,25 @@ with app.app_context():
             print('✓ Torneos dummy creados exitosamente')
     except Exception as e:
         print(f'Nota: {str(e)}')
+    
+    # Crear popup con imagen dummy si no existe
+    try:
+        if not Popup.query.first():
+            popup_dummy = Popup(
+                activo=False,
+                filename='popup_dummy.jpg'
+            )
+            db.session.add(popup_dummy)
+            db.session.commit()
+            print('✓ Popup inicial creado con imagen dummy (desactivado)')
+    except Exception as e:
+        print(f'Nota al crear popup: {str(e)}')
 
 @app.route('/')
 def index():
-    return render_template('index.html', titulo='InterCards TCG Hub')
+    logo = Logo.get_logo()
+    popup = Popup.get_popup()
+    return render_template('index.html', titulo='InterCards TCG Hub', logo=logo, popup=popup)
 
 @app.route('/admin', methods=['GET', 'POST'])
 def login():
@@ -171,10 +236,193 @@ def login():
     
     return render_template('login.html')
 
+@app.route('/sobre')
+def sobre():
+    logo = Logo.get_logo()
+    return render_template('sobre.html', logo=logo)
+
 @app.route('/admin/panel')
 @login_required
 def admin_panel():
-    return render_template('admin_panel.html')
+    logo = Logo.get_logo()
+    return render_template('admin_panel.html', logo=logo)
+
+
+@app.route('/admin/logo', methods=['POST', 'DELETE'])
+@login_required
+def gestionar_logo():
+    """
+    POST: Subir nuevo logo
+    DELETE: Eliminar logo actual
+    """
+    if request.method == 'POST':
+        if 'logo' not in request.files:
+            return jsonify({'error': 'No se envió ningún archivo'}), 400
+        
+        file = request.files['logo']
+        
+        if file.filename == '':
+            return jsonify({'error': 'No se seleccionó ningún archivo'}), 400
+        
+        # Validar extensión
+        if not allowed_file(file.filename):
+            return jsonify({'error': 'Formato no permitido. Use PNG, JPG, JPEG, GIF o WEBP'}), 400
+        
+        try:
+            # Eliminar logo anterior si existe
+            logo_actual = Logo.get_logo()
+            if logo_actual:
+                old_path = os.path.join(app.config['UPLOAD_FOLDER'], logo_actual.filename)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+                db.session.delete(logo_actual)
+            
+            # Guardar nuevo logo
+            filename = secure_filename(file.filename)
+            # Agregar timestamp para evitar cache
+            name, ext = os.path.splitext(filename)
+            filename = f"logo_{int(datetime.now().timestamp())}{ext}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            
+            # Guardar en base de datos
+            nuevo_logo = Logo(filename=filename)
+            db.session.add(nuevo_logo)
+            db.session.commit()
+            
+            return jsonify({
+                'mensaje': 'Logo actualizado exitosamente',
+                'logo_url': f'/static/uploads/{filename}'
+            }), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+    
+    elif request.method == 'DELETE':
+        try:
+            logo = Logo.get_logo()
+            if not logo:
+                return jsonify({'error': 'No hay logo para eliminar'}), 404
+            
+            # Eliminar archivo
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], logo.filename)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            
+            # Eliminar de base de datos
+            db.session.delete(logo)
+            db.session.commit()
+            
+            return jsonify({'mensaje': 'Logo eliminado exitosamente'})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+
+
+@app.route('/admin/popup', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@login_required
+def gestionar_popup():
+    """
+    GET: Obtener estado del popup
+    POST: Subir nueva imagen para el popup
+    PUT: Activar/desactivar popup
+    DELETE: Eliminar imagen del popup
+    """
+    if request.method == 'GET':
+        popup = Popup.get_popup()
+        if popup:
+            return jsonify({
+                'activo': popup.activo,
+                'filename': popup.filename,
+                'url': f'/static/uploads/{popup.filename}'
+            })
+        return jsonify({'activo': False, 'filename': None}), 404
+    
+    elif request.method == 'POST':
+        if 'imagen' not in request.files:
+            return jsonify({'error': 'No se envió ningún archivo'}), 400
+        
+        file = request.files['imagen']
+        
+        if file.filename == '':
+            return jsonify({'error': 'No se seleccionó ningún archivo'}), 400
+        
+        if not allowed_file(file.filename):
+            return jsonify({'error': 'Formato no permitido. Use PNG, JPG, JPEG, GIF o WEBP'}), 400
+        
+        try:
+            popup = Popup.get_popup()
+            
+            # Eliminar imagen anterior si existe y no es la dummy
+            if popup and popup.filename != 'popup_dummy.jpg':
+                old_path = os.path.join(app.config['UPLOAD_FOLDER'], popup.filename)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+            
+            # Guardar nueva imagen
+            filename = secure_filename(file.filename)
+            name, ext = os.path.splitext(filename)
+            filename = f"popup_{int(datetime.now().timestamp())}{ext}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            
+            # Actualizar o crear registro
+            if popup:
+                popup.filename = filename
+                popup.activo = True
+                popup.uploaded_at = datetime.utcnow()
+            else:
+                popup = Popup(filename=filename, activo=True)
+                db.session.add(popup)
+            
+            db.session.commit()
+            
+            return jsonify({
+                'mensaje': 'Popup actualizado exitosamente',
+                'url': f'/static/uploads/{filename}',
+                'activo': True
+            }), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+    
+    elif request.method == 'PUT':
+        try:
+            data = request.get_json()
+            activo = data.get('activo', True)
+            
+            popup = Popup.get_popup()
+            if not popup:
+                return jsonify({'error': 'No hay popup configurado'}), 404
+            
+            popup.activo = activo
+            db.session.commit()
+            
+            return jsonify({
+                'mensaje': f'Popup {"activado" if activo else "desactivado"} exitosamente',
+                'activo': popup.activo
+            })
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+    
+    elif request.method == 'DELETE':
+        try:
+            popup = Popup.get_popup()
+            if not popup:
+                return jsonify({'error': 'No hay popup para eliminar'}), 404
+            
+            # Eliminar archivo si no es dummy
+            if popup.filename != 'popup_dummy.jpg':
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], popup.filename)
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+            
+            # Restaurar a imagen dummy
+            popup.filename = 'popup_dummy.jpg'
+            popup.activo = False
+            db.session.commit()
+            
+            return jsonify({'mensaje': 'Popup restaurado a imagen por defecto'})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+
 
 @app.route('/logout')
 @login_required
@@ -182,10 +430,16 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
+def allowed_file(filename):
+    """Verifica si la extensión del archivo es permitida"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
 # API REST - Leer todos los torneos
 @app.route('/api/torneos', methods=['GET'])
 def get_torneos():
-    torneos = Torneo.query.all()
+    torneos = Torneo.query.order_by(Torneo.fecha.asc()).all()
     return jsonify([torneo.to_dict() for torneo in torneos])
 
 # HTMX - Renderizar grid de torneos
@@ -206,7 +460,7 @@ def filtrar():
     if juego:
         query = query.filter_by(tipo_juego=juego)
     
-    torneos = query.all()
+    torneos = query.order_by(Torneo.fecha.asc()).all()
     
     if not torneos:
         return '<p class="text-gray-300 text-center py-20 col-span-full">No hay torneos que coincidan con los filtros</p>'
@@ -356,4 +610,7 @@ def init_dummy():
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # En desarrollo usa el servidor de Flask, en producción usa gunicorn
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    app.run(debug=debug, host='0.0.0.0', port=port)

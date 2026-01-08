@@ -1,0 +1,79 @@
+<!-- Navbar Compartido con Menú Hamburguesa -->
+<nav class="bg-[#1a2742] text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo y Nombre -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                {% if logo %}
+                <img src="{{ url_for('static', filename='uploads/' + logo.filename) }}" alt="InterCards Logo" class="h-8 sm:h-10 w-auto object-contain">
+                {% else %}
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 11H6V9h2v2zm4 0h-2V9h2v2z"/>
+                    </svg>
+                </div>
+                {% endif %}
+                <span class="text-base sm:text-xl font-bold text-white">InterCards TCG Hub</span>
+            </div>
+            
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex items-center gap-6 lg:gap-8">
+                <a href="/" class="text-gray-300 hover:text-white transition">Inicio</a>
+                <a href="/sobre" class="text-gray-300 hover:text-white transition">Sobre Nosotros</a>
+                <a href="#" class="text-gray-300 hover:text-white transition">Contacto</a>
+                
+                {% if current_user.is_authenticated %}
+                <a href="/admin/panel" class="px-3 lg:px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm">Panel Admin</a>
+                <button onclick="abrirFormulario()" class="relative">
+                    <svg class="w-6 h-6 text-gray-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">+</span>
+                </button>
+                <a href="/logout" class="text-gray-300 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Botón Hamburguesa (Mobile) -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none" onclick="toggleMobileMenu()">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden pb-4">
+            <div class="flex flex-col space-y-3">
+                <a href="/" class="text-gray-300 hover:text-white transition py-2 px-4 rounded-lg hover:bg-[#243550]">Inicio</a>
+                <a href="/sobre" class="text-gray-300 hover:text-white transition py-2 px-4 rounded-lg hover:bg-[#243550]">Sobre Nosotros</a>
+                <a href="#" class="text-gray-300 hover:text-white transition py-2 px-4 rounded-lg hover:bg-[#243550]">Contacto</a>
+                
+                {% if current_user.is_authenticated %}
+                <a href="/admin/panel" class="text-white bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded-lg font-semibold transition">Panel Admin</a>
+                <button onclick="abrirFormulario()" class="text-gray-300 hover:text-white text-left py-2 px-4 rounded-lg hover:bg-[#243550]">+ Crear Torneo</button>
+                <a href="/logout" class="text-gray-300 hover:text-white transition py-2 px-4 rounded-lg hover:bg-[#243550]">Cerrar Sesión</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    
+    menu.classList.toggle('hidden');
+    menuIcon.classList.toggle('hidden');
+    closeIcon.classList.toggle('hidden');
+}
+</script>

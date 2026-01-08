@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - InterCards TCG Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .gradient-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
+
+    <!-- Contenido Principal -->
+    <div class="max-w-6xl mx-auto px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12 sm:mb-16">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                <span class="gradient-text">Sobre Nosotros</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+                Conectando la comunidad competitiva de Trading Card Games
+            </p>
+        </div>
+
+        <!-- Sección Principal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+            <!-- Nuestra Misión -->
+            <div class="gradient-card rounded-2xl p-6 sm:p-8 hover:scale-105 transition-transform duration-300">
+                <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold">Nuestra Misión</h2>
+                </div>
+                <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    En <span class="font-semibold text-white">InterCards TCG Hub</span>, nuestra misión es mantener informada a la comunidad de jugadores sobre todos los torneos de Trading Card Games disponibles. Creemos que cada jugador merece tener acceso fácil y rápido a la información de eventos competitivos.
+                </p>
+            </div>
+
+            <!-- Compromiso con la Comunidad -->
+            <div class="gradient-card rounded-2xl p-6 sm:p-8 hover:scale-105 transition-transform duration-300">
+                <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-pink-400 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold">Aportando a la Comunidad</h2>
+                </div>
+                <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Queremos aportar activamente a la <span class="font-semibold text-white">comunidad competitiva</span>, facilitando la organización y difusión de torneos. Nuestro objetivo es crear un espacio centralizado donde jugadores y organizadores puedan conectarse eficientemente.
+                </p>
+            </div>
+        </div>
+
+        <!-- Qué Ofrecemos -->
+        <div class="gradient-card rounded-2xl p-6 sm:p-10 mb-8 sm:mb-12">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">¿Qué Ofrecemos?</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-2">Calendario Actualizado</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm">Información en tiempo real sobre próximos torneos y eventos</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-2">Filtros Avanzados</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm">Encuentra torneos por fecha, ubicación y juego favorito</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-semibold mb-2">Detalles Completos</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm">Toda la información necesaria: premios, categorías, formatos y más</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patrocinio -->
+        <div class="gradient-card rounded-2xl p-6 sm:p-10 mb-8 sm:mb-12 text-center">
+            <div class="flex items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-6 flex-wrap">
+                <svg class="w-10 h-10 sm:w-12 sm:h-12 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <h2 class="text-2xl sm:text-3xl font-bold">Patrocinado por InterCards.cl</h2>
+                <svg class="w-10 h-10 sm:w-12 sm:h-12 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+            </div>
+            <p class="text-base sm:text-xl text-gray-300 mb-4 sm:mb-6 leading-relaxed max-w-3xl mx-auto px-4">
+                Este sitio es posible gracias al apoyo de <span class="font-bold text-white text-xl sm:text-2xl">InterCards.cl</span>, 
+                una tienda comprometida con el crecimiento y desarrollo de la comunidad competitiva de Trading Card Games en Chile.
+            </p>
+            <a href="https://intercards.cl" target="_blank" class="inline-block px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-sm sm:text-base rounded-lg transition-all duration-300 transform hover:scale-105">
+                Visitar InterCards.cl →
+            </a>
+        </div>
+
+        <!-- Futuro -->
+        <div class="gradient-card rounded-2xl p-6 sm:p-10 text-center">
+            <div class="flex items-center justify-center gap-3 mb-4 sm:mb-6">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <h2 class="text-2xl sm:text-3xl font-bold">El Futuro del Hub</h2>
+            </div>
+            <p class="text-base sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
+                Estamos constantemente trabajando en mejorar la plataforma. Nuestra visión incluye agregar nuevas funcionalidades como 
+                <span class="font-semibold text-white">registro de jugadores</span>, 
+                <span class="font-semibold text-white">brackets en vivo</span>, 
+                <span class="font-semibold text-white">estadísticas de torneos</span>, 
+                y mucho más para enriquecer la experiencia competitiva.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+                <span class="px-4 sm:px-6 py-2 bg-blue-500/20 border border-blue-500/40 rounded-full text-blue-300 font-semibold text-xs sm:text-sm">Sistema de Rankings</span>
+                <span class="px-4 sm:px-6 py-2 bg-purple-500/20 border border-purple-500/40 rounded-full text-purple-300 font-semibold text-xs sm:text-sm">Notificaciones</span>
+                <span class="px-4 sm:px-6 py-2 bg-green-500/20 border border-green-500/40 rounded-full text-green-300 font-semibold text-xs sm:text-sm">Brackets Interactivos</span>
+                <span class="px-4 sm:px-6 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-full text-yellow-300 font-semibold text-xs sm:text-sm">Más Juegos</span>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-12 sm:mt-16">
+            <p class="text-gray-400 text-base sm:text-lg mb-4 sm:mb-6">¿Listo para explorar los próximos torneos?</p>
+            <a href="/" class="inline-block px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                Ver Torneos Disponibles
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 sm:mt-20 py-6 sm:py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <p class="text-sm sm:text-base">&copy; 2026 InterCards TCG Hub. Todos los derechos reservados.</p>
+            <p class="text-xs sm:text-sm mt-2">Desarrollado con ❤️ para la comunidad competitiva</p>
+        </div>
+    </footer>
+</body>
+</html>

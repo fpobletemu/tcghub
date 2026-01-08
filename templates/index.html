@@ -20,60 +20,24 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="bg-[#1a2742] shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 11H6V9h2v2zm4 0h-2V9h2v2z"/>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-white">InterCards TCG Hub</span>
-                </div>
-                
-                <!-- Menu -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#" class="text-gray-300 hover:text-white transition">Seguimos</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition">Sobre</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition">Portafolio</a>
-                    <a href="#" class="text-gray-300 hover:text-white transition">Contacto</a>
-                    {% if current_user.is_authenticated %}
-                    <a href="/admin/panel" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm">Panel Admin</a>
-                    <button onclick="abrirFormulario()" class="relative">
-                        <svg class="w-6 h-6 text-gray-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">+</span>
-                    </button>
-                    <a href="/logout" class="text-gray-300 hover:text-white transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </nav>
+    {% include 'navbar.html' %}
 
     <!-- Hero Banner -->
     <div class="hero-banner relative flex items-center justify-center text-center">
         <div class="relative z-10 px-4">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
                 ¡Encuentra tu próximo<br>
                 <span class="text-yellow-400">Desafío TCG!</span>
             </h1>
-            <p class="text-xl text-gray-200">Pokémon, ¡mucho y más.</p>
+            <p class="text-lg sm:text-xl text-gray-200">Pokémon, One Piece y más.</p>
         </div>
     </div>
 
     <!-- Filtros -->
-    <div class="max-w-7xl mx-auto px-6 py-8">
-        <div class="flex flex-wrap gap-4 justify-center">
-            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
-                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center">
+            <div class="bg-white rounded-full px-4 sm:px-6 py-3 shadow-lg flex items-center gap-3 w-full sm:w-auto sm:min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
@@ -82,13 +46,13 @@
                         hx-get="/api/filtrar"
                         hx-target="#grid-torneos"
                         hx-include="[id='filtro-fecha'], [id='filtro-tienda'], [id='filtro-juego']"
-                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
+                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full text-sm sm:text-base">
                     <option value="">Ubicación (Región/Comuna)</option>
                 </select>
             </div>
 
-            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
-                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-full px-4 sm:px-6 py-3 shadow-lg flex items-center gap-3 w-full sm:w-auto sm:min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
                 <input type="date" 
@@ -97,21 +61,21 @@
                        hx-get="/api/filtrar"
                        hx-target="#grid-torneos"
                        hx-include="[id='filtro-ubicacion'], [id='filtro-tienda'], [id='filtro-juego']"
-                       class="bg-transparent border-none focus:outline-none text-gray-700 w-full"
-                       placeholder="Fecha (Día/Semana/Año)">
+                       class="bg-transparent border-none focus:outline-none text-gray-700 w-full text-sm sm:text-base"
+                       placeholder="Fecha">
             </div>
 
-            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
-                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-full px-4 sm:px-6 py-3 shadow-lg flex items-center gap-3 w-full sm:w-auto sm:min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
-                <select id="filtro-tienda" class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
+                <select id="filtro-tienda" class="bg-transparent border-none focus:outline-none text-gray-700 w-full text-sm sm:text-base">
                     <option value="">Tienda</option>
                 </select>
             </div>
 
-            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
-                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-full px-4 sm:px-6 py-3 shadow-lg flex items-center gap-3 w-full sm:w-auto sm:min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                 </svg>
                 <select id="filtro-juego"
@@ -119,8 +83,8 @@
                         hx-get="/api/filtrar"
                         hx-target="#grid-torneos"
                         hx-include="[id='filtro-fecha'], [id='filtro-ubicacion'], [id='filtro-tienda']"
-                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
-                    <option value="">TCG (Pokémon, Ones, Yu-Gi-Oh! Magic)</option>
+                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full text-sm sm:text-base">
+                    <option value="">TCG</option>
                     <option value="Pokemon">Pokémon</option>
                     <option value="One Piece">One Piece</option>
                     <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
@@ -130,18 +94,190 @@
         </div>
     </div>
 
-    <!-- Grid de Tarjetas -->
-    <div class="max-w-7xl mx-auto px-6 pb-12">
-        <h2 class="text-2xl font-bold text-white mb-6">Filter</h2>
-        <div id="grid-torneos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <p class="text-gray-300 text-center py-20 col-span-full">Cargando torneos...</p>
+    <!-- Contenedor Principal con Sidebar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Contenido Principal (Torneos) -->
+            <div class="lg:col-span-8 xl:col-span-9">
+                <h2 class="text-xl sm:text-2xl font-bold text-white mb-6">Próximos Torneos</h2>
+                <div id="grid-torneos" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                    <p class="text-gray-300 text-center py-20 col-span-full">Cargando torneos...</p>
+                </div>
+            </div>
+
+            <!-- Sidebar (Noticias, Rankings, Publicidad) -->
+            <aside class="lg:col-span-4 xl:col-span-3 space-y-6">
+                <!-- Espacio Publicitario 1 -->
+                <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-6 text-center shadow-lg">
+                    <div class="flex items-center justify-center mb-3">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">¡Espacio Publicitario!</h3>
+                    <p class="text-white text-sm opacity-90">300x250px</p>
+                    <p class="text-white text-xs mt-2">Contacta para publicitar aquí</p>
+                </div>
+
+                <!-- Últimas Noticias -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 shadow-lg">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                        </svg>
+                        <h3 class="text-white font-bold text-lg">Últimas Noticias</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <!-- Noticia 1 -->
+                        <div class="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition cursor-pointer">
+                            <div class="flex items-start gap-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <div>
+                                    <p class="text-white text-sm font-semibold">Nueva expansión anunciada</p>
+                                    <p class="text-gray-300 text-xs mt-1">Pokémon TCG lanza nueva serie en Marzo 2026</p>
+                                    <span class="text-gray-400 text-xs">Hace 2 horas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Noticia 2 -->
+                        <div class="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition cursor-pointer">
+                            <div class="flex items-start gap-2">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <div>
+                                    <p class="text-white text-sm font-semibold">Torneo Regional confirmado</p>
+                                    <p class="text-gray-300 text-xs mt-1">Santiago será sede del Regional 2026</p>
+                                    <span class="text-gray-400 text-xs">Hace 5 horas</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Noticia 3 -->
+                        <div class="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition cursor-pointer">
+                            <div class="flex items-start gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <div>
+                                    <p class="text-white text-sm font-semibold">Nuevo formato de juego</p>
+                                    <p class="text-gray-300 text-xs mt-1">Cambios en las reglas del formato estándar</p>
+                                    <span class="text-gray-400 text-xs">Hace 1 día</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition">
+                        Ver todas las noticias →
+                    </button>
+                </div>
+
+                <!-- Ranking Championship Points -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-5 shadow-lg">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        <h3 class="text-white font-bold text-lg">Top Championship Points</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <!-- Rank 1 -->
+                        <div class="bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 border border-yellow-500/30 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl font-bold text-yellow-400">1</span>
+                                    <div>
+                                        <p class="text-white font-semibold text-sm">Carlos Muñoz</p>
+                                        <p class="text-gray-300 text-xs">Master • Pokémon</p>
+                                    </div>
+                                </div>
+                                <span class="text-yellow-400 font-bold text-lg">450</span>
+                            </div>
+                        </div>
+                        <!-- Rank 2 -->
+                        <div class="bg-white/5 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xl font-bold text-gray-300">2</span>
+                                    <div>
+                                        <p class="text-white font-semibold text-sm">María Silva</p>
+                                        <p class="text-gray-300 text-xs">Master • One Piece</p>
+                                    </div>
+                                </div>
+                                <span class="text-white font-bold">385</span>
+                            </div>
+                        </div>
+                        <!-- Rank 3 -->
+                        <div class="bg-white/5 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xl font-bold text-gray-400">3</span>
+                                    <div>
+                                        <p class="text-white font-semibold text-sm">Juan Pérez</p>
+                                        <p class="text-gray-300 text-xs">Senior • Pokémon</p>
+                                    </div>
+                                </div>
+                                <span class="text-white font-bold">320</span>
+                            </div>
+                        </div>
+                        <!-- Rank 4 -->
+                        <div class="bg-white/5 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-lg font-bold text-gray-400">4</span>
+                                    <div>
+                                        <p class="text-white font-semibold text-sm">Ana Torres</p>
+                                        <p class="text-gray-300 text-xs">Master • Yu-Gi-Oh</p>
+                                    </div>
+                                </div>
+                                <span class="text-white font-bold">295</span>
+                            </div>
+                        </div>
+                        <!-- Rank 5 -->
+                        <div class="bg-white/5 rounded-lg p-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-lg font-bold text-gray-400">5</span>
+                                    <div>
+                                        <p class="text-white font-semibold text-sm">Diego López</p>
+                                        <p class="text-gray-300 text-xs">Senior • Pokémon</p>
+                                    </div>
+                                </div>
+                                <span class="text-white font-bold">280</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-lg transition">
+                        Ver ranking completo →
+                    </button>
+                </div>
+
+                <!-- Banner Informativo -->
+                <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl p-6 text-center shadow-lg">
+                    <svg class="w-12 h-12 text-white mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <h3 class="text-white font-bold text-lg mb-2">Banner Informativo</h3>
+                    <p class="text-white text-sm opacity-90 mb-3">Espacio para anuncios importantes, eventos especiales o promociones</p>
+                    <button class="px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition text-sm">
+                        Más información
+                    </button>
+                </div>
+
+                <!-- Espacio Publicitario 2 (Mobile - arriba en mobile, abajo en desktop) -->
+                <div class="lg:order-last bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl p-6 text-center shadow-lg">
+                    <div class="flex items-center justify-center mb-3">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Publicidad Premium</h3>
+                    <p class="text-white text-sm opacity-90">300x600px</p>
+                    <p class="text-white text-xs mt-2">Espacio disponible para patrocinadores</p>
+                </div>
+            </aside>
         </div>
     </div>
 
-    <!-- Banner Partner -->
-    <div class="max-w-7xl mx-auto px-6 py-8">
-        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-6 text-center">
-            <p class="text-white text-xl font-semibold">
+    <!-- Banner Partner (ahora debajo del contenido principal) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-4 sm:p-6 text-center">
+            <p class="text-white text-base sm:text-xl font-semibold">
                 ¿Tu tienda es Partner? <span class="text-yellow-300">¡Publica tus torneos Gratis!</span>
             </p>
         </div>
@@ -149,41 +285,41 @@
 
     <!-- Modal -->
     <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onclick="cerrarFormulario(event)">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-5 flex justify-between items-center rounded-t-2xl">
-                <h2 id="titulo-modal" class="text-2xl font-bold text-white">Crear Nuevo Torneo</h2>
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-cyan-600 px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center rounded-t-2xl">
+                <h2 id="titulo-modal" class="text-lg sm:text-2xl font-bold text-white">Crear Nuevo Torneo</h2>
                 <button onclick="cerrarFormulario()" class="text-white hover:text-gray-200 text-3xl font-light transition">&times;</button>
             </div>
 
-            <form id="formulario-torneo" class="p-8 space-y-6">
+            <form id="formulario-torneo" class="p-4 sm:p-8 space-y-4 sm:space-y-6">
                 <input type="hidden" id="torneo-id">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de Tienda:</label>
-                        <input type="text" id="nombre_tienda" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <input type="text" id="nombre_tienda" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Ubicación:</label>
-                        <input type="text" id="ubicacion" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <input type="text" id="ubicacion" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Hora:</label>
-                        <input type="time" id="hora" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <input type="time" id="hora" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Fecha:</label>
-                        <input type="date" id="fecha" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <input type="date" id="fecha" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de Juego:</label>
-                        <select id="tipo_juego" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <select id="tipo_juego" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                             <option value="">Seleccionar...</option>
                             <option value="Pokemon">Pokémon</option>
                             <option value="One Piece">One Piece</option>
@@ -205,7 +341,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de Torneo:</label>
-                        <select id="tipo_torneo" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <select id="tipo_torneo" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                             <option value="">Seleccionar...</option>
                             <option value="League Cup">League Cup</option>
                             <option value="League Challenge">League Challenge</option>
@@ -215,26 +351,26 @@
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Premio:</label>
-                        <input type="text" id="premio" {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                        <input type="text" id="premio" {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">URL de Imagen (opcional):</label>
-                    <input type="url" id="imagen" {% if not current_user.is_authenticated %}readonly{% endif %} placeholder="https://ejemplo.com/imagen.jpg" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    <input type="url" id="imagen" {% if not current_user.is_authenticated %}readonly{% endif %} placeholder="https://ejemplo.com/imagen.jpg" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
                     <p class="text-xs text-gray-500 mt-1">Si no agregas una imagen, se mostrará un diseño por defecto</p>
                 </div>
 
-                <div class="flex gap-4 justify-end pt-6 border-t">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-end pt-4 sm:pt-6 border-t">
                     {% if current_user.is_authenticated %}
                     <button type="button" onclick="if(confirm('¿Eliminar este torneo?')) eliminarTorneo()" 
-                            class="px-6 py-3 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition">
+                            class="w-full sm:w-auto px-4 sm:px-6 py-3 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition text-sm sm:text-base">
                         Eliminar
                     </button>
                     {% endif %}
-                    <button type="button" onclick="cerrarFormulario()" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition">Cancelar</button>
+                    <button type="button" onclick="cerrarFormulario()" class="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition text-sm sm:text-base">Cancelar</button>
                     {% if current_user.is_authenticated %}
-                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-cyan-700 transition shadow-lg">Guardar Torneo</button>
+                    <button type="submit" class="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-cyan-700 transition shadow-lg text-sm sm:text-base">Guardar Torneo</button>
                     {% endif %}
                 </div>
             </form>
@@ -242,5 +378,49 @@
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- Popup Informativo -->
+    {% if popup and popup.activo %}
+    <div id="popup-modal" class="fixed inset-0 bg-black bg-opacity-75 z-[100] flex items-center justify-center p-4" style="display: flex;">
+        <div class="relative max-w-4xl w-full">
+            <!-- Botón Cerrar -->
+            <button onclick="cerrarPopup()" class="absolute -top-4 -right-4 bg-white rounded-full w-12 h-12 flex items-center justify-center shadow-2xl hover:bg-gray-100 transition z-10">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            
+            <!-- Imagen del Popup -->
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <img src="{{ url_for('static', filename='uploads/' + popup.filename) }}" 
+                     alt="Información" 
+                     class="w-full h-auto object-contain max-h-[80vh]"
+                     onerror="this.src='https://via.placeholder.com/800x600/6366f1/ffffff?text=Flyer+Informativo'">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function cerrarPopup() {
+            document.getElementById('popup-modal').style.display = 'none';
+            // Guardar en localStorage para no mostrar nuevamente en esta sesión
+            sessionStorage.setItem('popup_cerrado', 'true');
+        }
+
+        // Verificar si el popup ya fue cerrado en esta sesión
+        window.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('popup_cerrado')) {
+                document.getElementById('popup-modal').style.display = 'none';
+            }
+        });
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                cerrarPopup();
+            }
+        });
+    </script>
+    {% endif %}
 </body>
 </html>
