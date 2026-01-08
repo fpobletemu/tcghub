@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body { 
+            background: linear-gradient(180deg, #1e3a5f 0%, #2d4a6e 100%);
+            min-height: 100vh;
+        }
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200') center/cover;
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="bg-[#1a2742] shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 11H6V9h2v2zm4 0h-2V9h2v2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-white">InterCards TCG Hub</span>
+                </div>
+                
+                <!-- Menu -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#" class="text-gray-300 hover:text-white transition">Seguimos</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition">Sobre</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition">Portafolio</a>
+                    <a href="#" class="text-gray-300 hover:text-white transition">Contacto</a>
+                    {% if current_user.is_authenticated %}
+                    <a href="/admin/panel" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm">Panel Admin</a>
+                    <button onclick="abrirFormulario()" class="relative">
+                        <svg class="w-6 h-6 text-gray-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">+</span>
+                    </button>
+                    <a href="/logout" class="text-gray-300 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner relative flex items-center justify-center text-center">
+        <div class="relative z-10 px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                ¡Encuentra tu próximo<br>
+                <span class="text-yellow-400">Desafío TCG!</span>
+            </h1>
+            <p class="text-xl text-gray-200">Pokémon, ¡mucho y más.</p>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex flex-wrap gap-4 justify-center">
+            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <select id="filtro-ubicacion" 
+                        hx-trigger="change"
+                        hx-get="/api/filtrar"
+                        hx-target="#grid-torneos"
+                        hx-include="[id='filtro-fecha'], [id='filtro-tienda'], [id='filtro-juego']"
+                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
+                    <option value="">Ubicación (Región/Comuna)</option>
+                </select>
+            </div>
+
+            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <input type="date" 
+                       id="filtro-fecha"
+                       hx-trigger="change"
+                       hx-get="/api/filtrar"
+                       hx-target="#grid-torneos"
+                       hx-include="[id='filtro-ubicacion'], [id='filtro-tienda'], [id='filtro-juego']"
+                       class="bg-transparent border-none focus:outline-none text-gray-700 w-full"
+                       placeholder="Fecha (Día/Semana/Año)">
+            </div>
+
+            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                <select id="filtro-tienda" class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
+                    <option value="">Tienda</option>
+                </select>
+            </div>
+
+            <div class="bg-white rounded-full px-6 py-3 shadow-lg flex items-center gap-3 min-w-[200px]">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                </svg>
+                <select id="filtro-juego"
+                        hx-trigger="change"
+                        hx-get="/api/filtrar"
+                        hx-target="#grid-torneos"
+                        hx-include="[id='filtro-fecha'], [id='filtro-ubicacion'], [id='filtro-tienda']"
+                        class="bg-transparent border-none focus:outline-none text-gray-700 w-full">
+                    <option value="">TCG (Pokémon, Ones, Yu-Gi-Oh! Magic)</option>
+                    <option value="Pokemon">Pokémon</option>
+                    <option value="One Piece">One Piece</option>
+                    <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
+                    <option value="Magic">Magic</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid de Tarjetas -->
+    <div class="max-w-7xl mx-auto px-6 pb-12">
+        <h2 class="text-2xl font-bold text-white mb-6">Filter</h2>
+        <div id="grid-torneos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <p class="text-gray-300 text-center py-20 col-span-full">Cargando torneos...</p>
+        </div>
+    </div>
+
+    <!-- Banner Partner -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl p-6 text-center">
+            <p class="text-white text-xl font-semibold">
+                ¿Tu tienda es Partner? <span class="text-yellow-300">¡Publica tus torneos Gratis!</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4" onclick="cerrarFormulario(event)">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-5 flex justify-between items-center rounded-t-2xl">
+                <h2 id="titulo-modal" class="text-2xl font-bold text-white">Crear Nuevo Torneo</h2>
+                <button onclick="cerrarFormulario()" class="text-white hover:text-gray-200 text-3xl font-light transition">&times;</button>
+            </div>
+
+            <form id="formulario-torneo" class="p-8 space-y-6">
+                <input type="hidden" id="torneo-id">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de Tienda:</label>
+                        <input type="text" id="nombre_tienda" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Ubicación:</label>
+                        <input type="text" id="ubicacion" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Hora:</label>
+                        <input type="time" id="hora" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Fecha:</label>
+                        <input type="date" id="fecha" required {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de Juego:</label>
+                        <select id="tipo_juego" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                            <option value="">Seleccionar...</option>
+                            <option value="Pokemon">Pokémon</option>
+                            <option value="One Piece">One Piece</option>
+                            <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
+                            <option value="Magic">Magic</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Categoría:</label>
+                        <select id="categoria" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                            <option value="">Seleccionar...</option>
+                            <option value="Junior">Junior</option>
+                            <option value="Senior">Senior</option>
+                            <option value="Master">Master</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Tipo de Torneo:</label>
+                        <select id="tipo_torneo" required {% if not current_user.is_authenticated %}disabled{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                            <option value="">Seleccionar...</option>
+                            <option value="League Cup">League Cup</option>
+                            <option value="League Challenge">League Challenge</option>
+                            <option value="Liga Casual">Liga Casual</option>
+                            <option value="Liga Competitiva">Liga Competitiva</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Premio:</label>
+                        <input type="text" id="premio" {% if not current_user.is_authenticated %}readonly{% endif %} class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">URL de Imagen (opcional):</label>
+                    <input type="url" id="imagen" {% if not current_user.is_authenticated %}readonly{% endif %} placeholder="https://ejemplo.com/imagen.jpg" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition {% if not current_user.is_authenticated %}bg-gray-100{% endif %}">
+                    <p class="text-xs text-gray-500 mt-1">Si no agregas una imagen, se mostrará un diseño por defecto</p>
+                </div>
+
+                <div class="flex gap-4 justify-end pt-6 border-t">
+                    {% if current_user.is_authenticated %}
+                    <button type="button" onclick="if(confirm('¿Eliminar este torneo?')) eliminarTorneo()" 
+                            class="px-6 py-3 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition">
+                        Eliminar
+                    </button>
+                    {% endif %}
+                    <button type="button" onclick="cerrarFormulario()" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition">Cancelar</button>
+                    {% if current_user.is_authenticated %}
+                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-cyan-700 transition shadow-lg">Guardar Torneo</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

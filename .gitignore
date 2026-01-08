@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask
+instance/
+.webassets-cache
+
+# Base de datos
+*.db
+*.sqlite
+*.sqlite3
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+.venv/
+interenv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Archivos de configuración locales
+config.local.py
+instance/config.py
+
+# Archivos temporales
+*.tmp
+*.bak
+*.cache
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
+
+# Jupyter Notebooks (si los usas para testing)
+.ipynb_checkpoints/
+*.ipynb
+
+# Archivos de prueba
+test_*.py
+*_test.py
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Documentación generada
+docs/_build/
+site/
