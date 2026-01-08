@@ -48,8 +48,8 @@ InterCards TCG Hub es una aplicación web moderna diseñada para facilitar la ge
 
 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/tu-usuario/intercards-tcg-hub.git
-cd intercards-tcg-hub/flask_app
+git clone https://github.com/fpobletemu/tcghub.git
+cd tcghub/flask_app
 ```
 
 2. **Crear entorno virtual**
